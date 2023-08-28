@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,25 +33,30 @@ public class MainController {
 
 	    // ... other mappings ...
 
-	  @GetMapping("/user/")
-	    public String home() {
+	  @GetMapping("/user")
+	    public  ResponseEntity<String> home() {
 			  
-		            return "user";
+	        return ResponseEntity.ok("user page");
 				
 		        
 		}
 	  
-	  @GetMapping("/user/cabpage")
+	  @RequestMapping("/admin")
 	    public ResponseEntity<String> cab() {
 	        return ResponseEntity.ok("cab page");
 		}
 	  
 	  
-	  @GetMapping("/user/cabinfo")
+	  @RequestMapping("/cabinfo")
 	  public List<CabInfo> getCab(){
 		  return CabService.getAll();
 	  }
-	    
+	  
+	  
+	  
+	  
+	  
+	
 	    
 
 }

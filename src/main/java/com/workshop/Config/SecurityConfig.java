@@ -5,14 +5,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.workshop.Repo.UserServiceRepo;
 
 @Configuration
@@ -47,40 +54,66 @@ public class SecurityConfig {
 	  }
 	  
 	  
+	  @Bean
+	    public JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter(ObjectMapper objectMapper, AuthenticationConfiguration authenticationConfiguration) throws Exception {
+
+	        JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter = new JsonUsernamePasswordAuthenticationFilter(objectMapper);
+	        jsonUsernamePasswordAuthenticationFilter.setFilterProcessesUrl("/login");
+	        jsonUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationConfiguration.getAuthenticationManager());
+	        jsonUsernamePasswordAuthenticationFilter.setPostOnly(true);
+	        jsonUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler(((request, response, authentication) -> {
+	            response.setStatus(200);
+	            response.getWriter().write("OK");
+	        }));
+	        jsonUsernamePasswordAuthenticationFilter.setAuthenticationFailureHandler((request, response, exception) -> {
+	            response.setStatus(401);
+	            response.getWriter().write("AUTHENTICATION_FAILED");
+	        });
+
+	        return jsonUsernamePasswordAuthenticationFilter;
+	    }
+	  
 	
 	  
 	  @Bean
-	  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-		  http
-          .authorizeHttpRequests()
-              .requestMatchers("/resources/**", "/registration", "/about","/forgot-pass","/change-pass","/register","/","/cabpage","/book").permitAll()
-              .requestMatchers("/admin/**").hasAuthority("ADMIN")
-              .requestMatchers("/user/**").hasAuthority("USER")
-              .requestMatchers("/vendor/**").hasAuthority("VENDOR")
-              .anyRequest().authenticated()
-              .and()
-          .formLogin()
-              .permitAll()
-              .successHandler(roleBasedAuthenticationSuccessHandler())
-               .and()
-          .logout()
-          .logoutUrl("/logout")
-          .logoutSuccessUrl("/login?logout")
+	    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-              .permitAll()
-              .and()
-              .csrf().disable();
+	       
+		  return httpSecurity
+	                .cors().and()
+	                .csrf().disable()
+	                .securityContext().requireExplicitSave(false)
+	                .securityContextRepository(new HttpSessionSecurityContextRepository())
+	                .and()
+	                .logout()
+	                .defaultLogoutSuccessHandlerFor(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK), request -> request.getServletPath().equals("/logout"))
+	                .and()
+	                .exceptionHandling()
+	                .accessDeniedHandler(new AccessDeniedHandlerImpl())
+	                .authenticationEntryPoint((request, response, authException) -> {
+	                    response.setStatus(401);
+	                    response.getWriter().write("BAD_AUTHENTICATION");
+	                })
+	                .and()
+	                .authorizeHttpRequests()
+	                .requestMatchers(HttpMethod.POST, "/login","register","/book").permitAll()
+	                .requestMatchers(HttpMethod.GET,"/cabinfo").permitAll()
 
-	    	
-			return http.build();
-		  
-	  }
-	  
+	                .requestMatchers("/top-secret").hasAuthority("ACCESS_TOP_SECRET")
+	                .requestMatchers("/secret").hasAuthority("ACCESS_SECRET")
+	                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+	                .requestMatchers("/user/**").hasAuthority("USER") 
+
+	                .anyRequest().authenticated()
+	                .and()
+	                .build();
+
+	    }
 	   @Bean
 	    public RoleBasedAuthenticationSuccessHandler roleBasedAuthenticationSuccessHandler() {
 	        RoleBasedAuthenticationSuccessHandler successHandler = new RoleBasedAuthenticationSuccessHandler();
-	        successHandler.setAdminTargetUrl("/admin/dashboard");
-	        successHandler.setDoctorTargetUrl("/user/cabinfo");
+	       // successHandler.setAdminTargetUrl("/admin/dashboard");
+	       // successHandler.setDoctorTargetUrl("/user/cabinfo");
             successHandler.setPatientTargetUrl("/vendor/dashboard");
 	        return successHandler;
 	    }

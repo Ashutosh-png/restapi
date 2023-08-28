@@ -35,22 +35,7 @@ public class UserRegistrationController {
 	BCryptPasswordEncoder passwordEncoder;
 	
 	
-	@PostMapping("/login")
-	public ResponseEntity<String>  login( @RequestBody LoginForm form, BindingResult bindingResult,
-	                         HttpServletRequest request) {
-	  if (bindingResult.hasErrors()) {
-	    throw new ApplicationContextException("Invalid username or password");
-	  }
 
-	  try {
-	    request.login(form.getUsername(), form.getPassword());
-	  } catch (ServletException e) {
-	    throw new ApplicationContextException("Invalid username or password");
-	  }
-
-	
-	  return ResponseEntity.ok("login Successfully");
-	}
 
 
 	
