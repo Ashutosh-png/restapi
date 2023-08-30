@@ -11,7 +11,7 @@ import com.workshop.Entity.Booking;
 import com.workshop.Service.BookingService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000") // Specify the allowed origin
+@CrossOrigin(origins = {"http://localhost:3000","http://localhost:3005"}) // Specify the allowed origin
 
 public class BookingController {
 	@Autowired

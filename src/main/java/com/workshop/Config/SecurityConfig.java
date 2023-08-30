@@ -63,7 +63,8 @@ public class SecurityConfig {
 	        jsonUsernamePasswordAuthenticationFilter.setPostOnly(true);
 	        jsonUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler(((request, response, authentication) -> {
 	            response.setStatus(200);
-	            response.getWriter().write("OK");
+	            response.setContentType("application/json"); // Set the content type to JSON
+	            response.getWriter().write("{\"message\": \"Login successful\"}");
 	        }));
 	        jsonUsernamePasswordAuthenticationFilter.setAuthenticationFailureHandler((request, response, exception) -> {
 	            response.setStatus(401);
@@ -97,7 +98,7 @@ public class SecurityConfig {
 	                .and()
 	                .authorizeHttpRequests()
 	                .requestMatchers(HttpMethod.POST, "/login","register","/book").permitAll()
-	                .requestMatchers(HttpMethod.GET,"/cabinfo").permitAll()
+	                .requestMatchers(HttpMethod.GET,"/cabinfo","/getLongName").permitAll()
 
 	                .requestMatchers("/top-secret").hasAuthority("ACCESS_TOP_SECRET")
 	                .requestMatchers("/secret").hasAuthority("ACCESS_SECRET")
