@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000","http://localhost:3005"}) // Specify the allowed origin
+@CrossOrigin(origins = {"http://localhost:3000","http://localhost:3002"}) // Specify the allowed origin
 
 public class UserRegistrationController {
 	

@@ -1,11 +1,14 @@
 package com.workshop.Entity;
 
+import com.workshop.Repo.Trip;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 @Entity
-public class onewayTrip {
+public class onewayTrip implements Trip
+{
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long id;
@@ -16,9 +19,9 @@ public class onewayTrip {
 	    private String destinationCity;
 	    private int hatchback;
 	    private int sedan;
-	    private int sedanPremium;
+	    private int sedanpremium;
 	    private int suv;
-	    private int suvPlus;
+	    private int suvplus;
 	    private String status;
 		public Long getId() {
 			return id;
@@ -62,11 +65,11 @@ public class onewayTrip {
 		public void setSedan(int sedan) {
 			this.sedan = sedan;
 		}
-		public int getSedanPremium() {
-			return sedanPremium;
+		public int getSedanpremium() {
+			return sedanpremium;
 		}
-		public void setSedanPremium(int sedanPremium) {
-			this.sedanPremium = sedanPremium;
+		public void setSedanpremium(int sedanpremium) {
+			this.sedanpremium = sedanpremium;
 		}
 		public int getSuv() {
 			return suv;
@@ -74,11 +77,11 @@ public class onewayTrip {
 		public void setSuv(int suv) {
 			this.suv = suv;
 		}
-		public int getSuvPlus() {
-			return suvPlus;
+		public int getSuvplus() {
+			return suvplus;
 		}
-		public void setSuvPlus(int suvPlus) {
-			this.suvPlus = suvPlus;
+		public void setSuvplus(int suvplus) {
+			this.suvplus = suvplus;
 		}
 		public String getStatus() {
 			return status;
@@ -86,12 +89,8 @@ public class onewayTrip {
 		public void setStatus(String status) {
 			this.status = status;
 		}
-		public onewayTrip() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
 		public onewayTrip(Long id, String sourceState, String sourceCity, String destinationState,
-				String destinationCity, int hatchback, int sedan, int sedanPremium, int suv, int suvPlus,
+				String destinationCity, int hatchback, int sedan, int sedanpremium, int suv, int suvplus,
 				String status) {
 			super();
 			this.id = id;
@@ -101,18 +100,23 @@ public class onewayTrip {
 			this.destinationCity = destinationCity;
 			this.hatchback = hatchback;
 			this.sedan = sedan;
-			this.sedanPremium = sedanPremium;
+			this.sedanpremium = sedanpremium;
 			this.suv = suv;
-			this.suvPlus = suvPlus;
+			this.suvplus = suvplus;
 			this.status = status;
+		}
+		public onewayTrip() {
+			super();
+			// TODO Auto-generated constructor stub
 		}
 		@Override
 		public String toString() {
 			return "onewayTrip [id=" + id + ", sourceState=" + sourceState + ", sourceCity=" + sourceCity
 					+ ", destinationState=" + destinationState + ", destinationCity=" + destinationCity + ", hatchback="
-					+ hatchback + ", sedan=" + sedan + ", sedanPremium=" + sedanPremium + ", suv=" + suv + ", suvPlus="
-					+ suvPlus + ", status=" + status + "]";
+					+ hatchback + ", sedan=" + sedan + ", sedanpremium=" + sedanpremium + ", suv=" + suv + ", suvplus="
+					+ suvplus + ", status=" + status + "]";
 		}
+		
 	    
 	    
 

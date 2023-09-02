@@ -10,7 +10,7 @@ import com.workshop.Entity.onewayTrip;
 @Repository
 public interface OnewayTripRepo  extends JpaRepository<onewayTrip, Long>{
 	
-	List<onewayTrip> findBySourceCityAndDestinationCity(String to, String from);
+	List<Trip> findBySourceCityAndDestinationCity(String to, String from);
 
 
 }

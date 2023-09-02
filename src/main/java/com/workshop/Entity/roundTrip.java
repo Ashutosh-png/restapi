@@ -1,5 +1,7 @@
 package com.workshop.Entity;
 
+import com.workshop.Repo.Trip;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,7 +9,7 @@ import jakarta.persistence.Id;
 
 
 @Entity
-public class roundTrip {
+public class roundTrip implements Trip{
 	
 	  @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +21,10 @@ public class roundTrip {
 	    private String destinationCity;
 	    private int hatchback;
 	    private int sedan;
-	    private int sedanPremium;
+	    private int sedanpremium;
 	    private int suv;
-	    private int suvPlus;
-	    private int status;
+	    private int suvplus;
+	    private String status;
 		public Long getId() {
 			return id;
 		}
@@ -65,11 +67,11 @@ public class roundTrip {
 		public void setSedan(int sedan) {
 			this.sedan = sedan;
 		}
-		public int getSedanPremium() {
-			return sedanPremium;
+		public int getSedanpremium() {
+			return sedanpremium;
 		}
-		public void setSedanPremium(int sedanPremium) {
-			this.sedanPremium = sedanPremium;
+		public void setSedanpremium(int sedanpremium) {
+			this.sedanpremium = sedanpremium;
 		}
 		public int getSuv() {
 			return suv;
@@ -77,20 +79,20 @@ public class roundTrip {
 		public void setSuv(int suv) {
 			this.suv = suv;
 		}
-		public int getSuvPlus() {
-			return suvPlus;
+		public int getSuvplus() {
+			return suvplus;
 		}
-		public void setSuvPlus(int suvPlus) {
-			this.suvPlus = suvPlus;
+		public void setSuvplus(int suvplus) {
+			this.suvplus = suvplus;
 		}
-		public int getStatus() {
+		public String getStatus() {
 			return status;
 		}
-		public void setStatus(int status) {
+		public void setStatus(String status) {
 			this.status = status;
 		}
 		public roundTrip(Long id, String sourceState, String sourceCity, String destinationState,
-				String destinationCity, int hatchback, int sedan, int sedanPremium, int suv, int suvPlus, int status) {
+				String destinationCity, int hatchback, int sedan, int sedanpremium, int suv, int suvplus, String  status) {
 			super();
 			this.id = id;
 			this.sourceState = sourceState;
@@ -99,9 +101,9 @@ public class roundTrip {
 			this.destinationCity = destinationCity;
 			this.hatchback = hatchback;
 			this.sedan = sedan;
-			this.sedanPremium = sedanPremium;
+			this.sedanpremium = sedanpremium;
 			this.suv = suv;
-			this.suvPlus = suvPlus;
+			this.suvplus = suvplus;
 			this.status = status;
 		}
 		public roundTrip() {
@@ -112,9 +114,10 @@ public class roundTrip {
 		public String toString() {
 			return "roundTrip [id=" + id + ", sourceState=" + sourceState + ", sourceCity=" + sourceCity
 					+ ", destinationState=" + destinationState + ", destinationCity=" + destinationCity + ", hatchback="
-					+ hatchback + ", sedan=" + sedan + ", sedanPremium=" + sedanPremium + ", suv=" + suv + ", suvPlus="
-					+ suvPlus + ", status=" + status + "]";
+					+ hatchback + ", sedan=" + sedan + ", sedanpremium=" + sedanpremium + ", suv=" + suv + ", suvplus="
+					+ suvplus + ", status=" + status + "]";
 		}
+		
 	    
 	    
 	    

@@ -12,7 +12,7 @@ import com.workshop.Entity.roundTrip;
 public interface RoundTripRepo extends JpaRepository<roundTrip, Long>{
 	
 	
-	List<roundTrip> findBySourceCityAndDestinationCity(String to, String from);
+	List<Trip> findBySourceCityAndDestinationCity(String to, String from);
 
 
 }
